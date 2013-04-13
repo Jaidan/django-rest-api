@@ -131,7 +131,7 @@ class APIPostView(APIResponseMixin, APIDataMixin, APIFormMixin, View):
         else:
             return self.form_invalid(form)
 
-class APIDeleteView(APIResponseMixin, SingleObjectMixin):
+class APIDeleteView(APIResponseMixin, SingleObjectMixin, View):
 
     def delete(self, request, *args, **kwargs):
         try: 
@@ -218,7 +218,7 @@ class APIMultipleObjectMixin(MultipleObjectMixin):
             )
         return data
 
-class APIListView(APIMultipleObjectMixin, APIResponseView):
+class APIListView(APIResponseMixin, APIDataMixin, APIMultipleObjectMixin, View):
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         allow_empty = self.get_allow_empty()
