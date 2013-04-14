@@ -1,6 +1,7 @@
 import inspect
 import json
 from django.core.handlers.wsgi import WSGIRequest
+from django.utils import datastructures
 
 class MetaClass(type):
     def __new__(self, classname, classbases, classdict):
@@ -77,5 +78,10 @@ class WSGIRequest(MetaObject):
             '_%s' % self.method.lower(),
            query_data 
         )
+
+    def _get_request(self):
+        if not hasattr(self, '_request'):
+            self._request = datastructures.MergeDict(self.POST, self.GET, self.PUT)
+        return self._request
 
     PUT = property(_get_put, _set_put)
