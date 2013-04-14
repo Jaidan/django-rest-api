@@ -34,6 +34,8 @@ class WSGIRequest(MetaObject):
     def _load_post_and_files(self):
         if self.method != 'POST' and self.method != 'PUT':
             query_data, self._files = QueryDict('', encoding=self._encoding), MultiValueDict()
+            self._post = {}
+            self._put = {}
             setattr(self,
                 '_%s' % self.method.lower(),
                query_data 
@@ -74,6 +76,8 @@ class WSGIRequest(MetaObject):
                     '__all__': 'Malformed JSON'}))
         else:
             query_data, self._files = QueryDict('', encoding=self._encoding), MultiValueDict()
+        self._post = {}
+        self._put = {}
         setattr(self,
             '_%s' % self.method.lower(),
            query_data 
