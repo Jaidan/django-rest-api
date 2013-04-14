@@ -88,4 +88,5 @@ class WSGIRequest(MetaObject):
             self._request = datastructures.MergeDict(self.POST, self.GET, self.PUT)
         return self._request
 
+    REQUEST = property(_get_request)
     PUT = property(_get_put, _set_put)
