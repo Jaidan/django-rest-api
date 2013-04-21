@@ -28,5 +28,6 @@ setup(
     ],
     install_requires=[
         'django>=1.3'
+        'oauth2app>=0.3.0',
     ],
 )

@@ -1,7 +1,12 @@
 import inspect
 import json
+from io import BytesIO
 from django.core.handlers.wsgi import WSGIRequest
 from django.utils import datastructures
+from django.http import QueryDict
+from django.http.response import HttpResponseBadRequest
+from django.utils.datastructures import MultiValueDict
+
 
 class MetaClass(type):
     def __new__(self, classname, classbases, classdict):
@@ -34,12 +39,8 @@ class WSGIRequest(MetaObject):
     def _load_post_and_files(self):
         if self.method != 'POST' and self.method != 'PUT':
             query_data, self._files = QueryDict('', encoding=self._encoding), MultiValueDict()
-            self._post = {}
-            self._put = {}
-            setattr(self,
-                '_%s' % self.method.lower(),
-               query_data 
-            )
+            self._post = query_data
+            self._put = query_data
             return
         if self._read_started and not hasattr(self, '_body'):
             self._mark_post_parse_error()
